@@ -39,7 +39,8 @@ class WithDefaultMemModel(clockDivision: Int = 1) extends Config((site, here, up
 class WithLLCModel(maxSets: Int, maxWays: Int) extends Config((site, here, up) => {
   case LlcKey => Some(LLCParams().copy(
     ways = WRange(1, maxWays),
-    sets = WRange(1, maxSets)
+    sets = WRange(1, maxSets),
+    mshrs = WRange(1, 16)
   ))
 })
 
@@ -114,6 +115,11 @@ class FRFCFS16GBQuadRank(clockDiv: Int = 1) extends Config(
 )
 class FRFCFS16GBQuadRankLLC4MB extends Config(
   new WithLLCModel(4096, 8) ++
+  new FRFCFS16GBQuadRank
+)
+
+class FRFCFS16GBQuadRankLLCMaxSetb17MaxWayb1 extends Config(
+  new WithLLCModel(4096*8*4, 2) ++
   new FRFCFS16GBQuadRank
 )
 

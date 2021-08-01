@@ -170,27 +170,27 @@ vcs = $(GENERATED_DIR)/$(DESIGN)
 vcs_debug = $(GENERATED_DIR)/$(DESIGN)-debug
 vcs_args = +vcs+initreg+0 +vcs+initmem+0
 xsim = $(GENERATED_DIR)/$(DESIGN)-$(PLATFORM)
-sim_binary_basename := $(basename $(notdir $(SIM_BINARY)))
+# support pk binary.riscv
+# style workloads
+sim_binary_basename := $(subst $() $(),_,$(basename $(notdir $(SIM_BINARY))))
+#separatedisasm = " > >(tee $(sim_binary_basename).log) 2> $(sim_binary_basename).log"
 
 run-verilator: $(verilator)
 	cd $(dir $<) && \
 	$(verilator) +permissive $(verilator_args) $(COMMON_SIM_ARGS) $(MIDAS_LEVEL_SIM_ARGS) $(EXTRA_SIM_ARGS) +permissive-off $(abspath $(SIM_BINARY)) \
-	$(disasm) $(sim_binary_basename).out
+	2> $(sim_binary_basename).out > $(sim_binary_basename).log
 
 run-verilator-debug: $(verilator_debug)
 	cd $(dir $<) && \
-	$(verilator_debug) +permissive $(verilator_args) +waveform=$(sim_binary_basename).vpd $(COMMON_SIM_ARGS) $(MIDAS_LEVEL_SIM_ARGS) $(EXTRA_SIM_ARGS) +permissive-off $(abspath $(SIM_BINARY)) \
-	$(disasm) $(sim_binary_basename).out
+	$(verilator_debug) +permissive $(verilator_args) +waveform=$(sim_binary_basename).vpd $(COMMON_SIM_ARGS) $(MIDAS_LEVEL_SIM_ARGS) $(EXTRA_SIM_ARGS) +permissive-off $(abspath $(SIM_BINARY)) $(separatedisasm)
 
 run-vcs: $(vcs)
 	cd $(dir $<) && \
-	$(vcs) +permissive $(vcs_args) $(COMMON_SIM_ARGS) $(MIDAS_LEVEL_SIM_ARGS) $(EXTRA_SIM_ARGS) +permissive-off $(abspath $(SIM_BINARY)) \
-	$(disasm) $(sim_binary_basename).out
+	$(vcs) +permissive $(vcs_args) $(COMMON_SIM_ARGS) $(MIDAS_LEVEL_SIM_ARGS) $(EXTRA_SIM_ARGS) +permissive-off $(abspath $(SIM_BINARY)) $(separatedisasm)
 
 run-vcs-debug: $(vcs_debug)
 	cd $(dir $<) && \
-	$(vcs_debug) +permissive $(vcs_args) +waveform=$(sim_binary_basename).vpd $(COMMON_SIM_ARGS) $(MIDAS_LEVEL_SIM_ARGS) $(EXTRA_SIM_ARGS) +permissive-off $(abspath $(SIM_BINARY)) \
-	$(disasm) $(sim_binary_basename).out
+	$(vcs_debug) +permissive $(vcs_args) +waveform=$(sim_binary_basename).vpd $(COMMON_SIM_ARGS) $(MIDAS_LEVEL_SIM_ARGS) $(EXTRA_SIM_ARGS) +permissive-off $(abspath $(SIM_BINARY)) $(separatedisasm)
 
 .PHONY: run-xsim
 run-xsim: $(xsim)

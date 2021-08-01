@@ -10,3 +10,10 @@ bw-test-two-instances/*.riscv
 linux-poweroff
 unittest/STRESSRUNS
 /gapbs
+
+boom-plain-bmarks.json
+boom-plain-bmarks/
+protoacc-des-bmarks.json
+protoacc-des-bmarks/
+protoacc-ser-bmarks.json
+protoacc-ser-bmarks/

@@ -11,7 +11,7 @@ from fabric.api import local, hide
 rootLogger = logging.getLogger()
 
 # this needs to be updated whenever the FPGA Dev AMI changes
-f1_ami_name = "FPGA Developer AMI - 1.6.0-40257ab5-6688-4c95-97d1-e251a40fd1fc-ami-0b1edf08d56c2da5c.4"
+f1_ami_name = "FPGA Developer AMI - 1.6.1-40257ab5-6688-4c95-97d1-e251a40fd1fc-ami-01d5f32a3d517960b.4"
 
 def aws_resource_names():
     """ Get names for various aws resources the manager relies on. For example:
@@ -391,6 +391,21 @@ def send_firesim_notification(subject, body):
     )
 
 if __name__ == '__main__':
+    import sys
+    if len(sys.argv) == 2:
+        if sys.argv[1] == "benchlaunch":
+            benchinst = launch_run_instances('m4.large', 1, 'benchtestx86', 'ondemand', 'terminate', 'ondemand')
+            print(benchinst)
+            wait_on_instance_launches(benchinst)
+            print(get_private_ips_for_instances(benchinst))
+
+        if sys.argv[1] == "benchterminate":
+            benchinst = get_instances_by_tag_type('benchtestx86', 'm4.large')
+            print(benchinst)
+            instids = get_instance_ids_for_instances(benchinst)
+            print(instids)
+            terminate_instances(instids, False)
+
     #""" Example usage """
     #instanceobjs = launch_instances('c5.4xlarge', 2)
     #instance_ips = get_private_ips_for_instances(instanceobjs)
@@ -405,4 +420,4 @@ if __name__ == '__main__':
 
     #send_firesim_notification("test subject", "test message")
 
-    print(aws_resource_names())
+    #print(aws_resource_names())

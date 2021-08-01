@@ -75,3 +75,11 @@ class BaseF1Config extends Config(
   new WithILATopWiringTransform ++
   new midas.F1Config
 )
+
+class BaseF1ConfigSingleMem extends Config(
+  new WithAsyncResetReplacement ++
+  new WithPlusArgReaderRemoval ++
+  new WithEC2F1Artefacts ++
+  new WithILATopWiringTransform ++
+  new midas.F1ConfigSingleMem
+)
