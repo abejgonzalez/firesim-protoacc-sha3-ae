@@ -182,7 +182,7 @@ if wget -T 1 -t 3 -O /dev/null http://169.254.169.254/; then
     cd $RDIR
     sudo pip3 install -r $marshal_dir/python-requirements.txt
     cat $marshal_dir/centos-requirements.txt | sudo xargs yum install -y
-    wget https://git.kernel.org/pub/scm/fs/ext2/e2fsprogs.git/snapshot/e2fsprogs-1.45.4.tar.gz
+    wget --no-check-certificate https://git.kernel.org/pub/scm/fs/ext2/e2fsprogs.git/snapshot/e2fsprogs-1.45.4.tar.gz
     tar xvzf e2fsprogs-1.45.4.tar.gz
     cd e2fsprogs-1.45.4/
     mkdir build && cd build

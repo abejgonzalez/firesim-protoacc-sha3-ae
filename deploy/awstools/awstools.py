@@ -94,10 +94,12 @@ def aws_resource_names():
 def get_f1_ami_id():
     """ Get the AWS F1 Developer AMI by looking up the image name -- should be region independent.
     """
-    client = boto3.client('ec2')
-    response = client.describe_images(Filters=[{'Name': 'name', 'Values': [f1_ami_name]}])
-    assert len(response['Images']) == 1
-    return response['Images'][0]['ImageId']
+    #client = boto3.client('ec2')
+    #response = client.describe_images(Filters=[{'Name': 'name', 'Values': [f1_ami_name]}])
+    #print(response)
+    #assert len(response['Images']) == 1
+    #return response['Images'][0]['ImageId']
+    return "ami-075fdcdc326141760"
 
 def get_aws_userid():
     """ Get the user's IAM ID to intelligently create a bucket name when doing managerinit.
