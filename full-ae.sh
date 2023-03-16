@@ -64,6 +64,7 @@ unset MAKEFLAGS # this version of firesim doesn't support make parallelism
 popd
 
 # run the workload
+make -C sim DESIGN=FireSim TARGET_CONFIG=DDR3FRFCFSLLCMaxSetb17MaxWayb1_FireSimISCAProtoShax3RocketConfig PLATFORM_CONFIG=BaseF1ConfigSingleMem_F45MHz f1
 CFG_DIR="$FDIR/deploy/ae-configs"
 ARGS="-c $CFG_DIR/config_runtime.ini -b $CFG_DIR/config_build.ini -r $CFG_DIR/config_build_recipes.ini -a $CFG_DIR/config_hwdb.ini"
 firesim launchrunfarm $ARGS
@@ -77,16 +78,23 @@ LAST_DIR=$(ls | tail -n1)
 if [ -d "$LAST_DIR" ]; then
 	pushd $LAST_DIR
 
-	echo "Printing Serial - CPU only"
-	$SW_DIR/parse-serial.py isca23-ss-serial-all-cpu/uartlog
+	#echo "Printing Non-Chained Non-Accel. Measurements"
+	$SW_DIR/parse-serial-cpu.py isca23-ss-serial-all-cpu/uartlog > $FDIR/overall-results-psc.txt
 
-	echo "Printing Serial - Accels only"
-	$SW_DIR/parse-serial.py isca23-ss-serial-all-accel/uartlog
+	#echo "Printing Non-Chained Accel. Measurements"
+	$SW_DIR/parse-serial-accel.py isca23-ss-serial-all-accel/uartlog > $FDIR/overall-results-psa.txt
 
-	echo "Printing Chaining - Accels only"
-	$SW_DIR/parse-chained.py isca23-ss-chained-all-accel/uartlog
+	#echo "Printing Chained Accel. E2E Measurements"
+	$SW_DIR/parse-chained.py isca23-ss-chained-all-accel/uartlog > $FDIR/overall-results-pc.txt
 
 	popd
+
+	cat $FDIR/overall-results-*.txt > $FDIR/overall-results.txt
+
+	echo "--- Print paper results ---"
+	cat $FDIR/overall-results.txt
+	$SW_DIR/parse-overall.py $FDIR/overall-results.txt
+	echo "--- Print paper results ---"
 else
 	echo "Something went wrong"
 	exit 1
