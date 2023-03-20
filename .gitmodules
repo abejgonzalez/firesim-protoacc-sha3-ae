@@ -37,3 +37,6 @@
 [submodule "sw/proto-sha3-sw"]
 	path = sw/proto-sha3-sw
 	url = https://github.com/abejgonzalez/proto-sha3-sw.git
+[submodule "profilingmodelpy"]
+	path = profilingmodelpy
+	url = https://github.com/google/profiling-data-processing-model-isca23-ae.git

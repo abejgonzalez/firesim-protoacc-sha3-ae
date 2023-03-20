@@ -2,27 +2,14 @@
 
 set -ex
 
-# currently private so ssh is needed
-#sudo rm -rf fs-setup
-#git clone git@github.com:abejgonzalez/firesim-protoacc-sha3-ae.git fs-setup
-#pushd fs-setup/scripts
-#sudo ./machine-launch-script.sh
-#popd
-
-# logout of machine
-
 NPROC=16
 
 # currently private so ssh is needed
 export FDIR=$(git rev-parse --show-toplevel)
 cd $FDIR
 
-# setup the repo
-./scripts/first-clone-setup-fast.sh
-
+# just in case ae forgot to source it
 source sourceme-f1-manager.sh
-
-firesim managerinit # requires manual input
 
 # build proto bmarks and code
 pushd target-design/chipyard/generators/protoacc/firesim-workloads/
@@ -91,10 +78,11 @@ if [ -d "$LAST_DIR" ]; then
 
 	cat $FDIR/overall-results-*.txt > $FDIR/overall-results.txt
 
-	echo "--- Print paper results ---"
-	cat $FDIR/overall-results.txt
-	$SW_DIR/parse-overall.py $FDIR/overall-results.txt
-	echo "--- Print paper results ---"
+	echo "--- Parsing paper results ---"
+	cat $FDIR/overall-results.txt | tee $FDIR/final-overall-results.txt
+	$SW_DIR/parse-overall.py $FDIR/overall-results.txt | tee -a $FDIR/final-overall-results.txt
+	$FDIR/modelrun.py $FDIR/final-overall-results.txt | grep "t_prime_cpu" | tee $FDIR/final-ae-results.txt
+	cat $FDIR/final-overall-results.txt >> $FDIR/final-ae-results.txt
 else
 	echo "Something went wrong"
 	exit 1

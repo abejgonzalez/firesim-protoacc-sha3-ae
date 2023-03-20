@@ -26,11 +26,8 @@ export FIRESIM_RUNFARM_PREFIX=""
 # put FlameGraph/other fireperf utils on the user path
 export PATH=$(pwd)/utils/fireperf:$(pwd)/utils/fireperf/FlameGraph:$PATH
 
-
-PROTO_BASE_DIR="$RDIR/target-design/chipyard/generators/protoacc"
-export PROTOACC_SRC="$PROTO_BASE_DIR/src/main/scala"
-export PROTOACC_FSIM="$PROTO_BASE_DIR/firesim-workloads"
-export UBENCH_RESULTS="$PROTO_BASE_DIR/firesim-workloads/dataprocess/ubmarks"
-export HYPER_RESULTS="$PROTO_BASE_DIR/firesim-workloads/dataprocess/bmarks"
-export BUILT_HWDB_ENTRIES="$RDIR/deploy/built-hwdb-entries"
+export GEN_DIR="$RDIR/target-design/chipyard/generators/"
+export SW_DIR="$RDIR/sw/proto-sha3-sw"
+export CFG_DIR="$RDIR/deploy/ae-configs"
+export BLT_DIR="$RDIR/deploy/built-hwdb-entries"
 
