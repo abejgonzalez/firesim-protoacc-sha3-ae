@@ -46,6 +46,7 @@ sudo yum -y install graphviz python-devel
 # used for CI
 sudo yum -y install expect
 
+sudo pip2 install --upgrade --ignore-installed pyparsing
 sudo pip2 install argcomplete==1.9.3 \
                   awscli==1.15.76 \
                   Babel==0.9.6 \
